@@ -19,6 +19,7 @@ public class Wort {
 
 
     Wort(String spanisch, String deutsch, char art) {
+        this.unregelmaessig=false;
         invinitivSpan = spanisch;
         invinitivDeutsch = deutsch;
         if ((art == 'n') || (art == 'N')) {
@@ -100,6 +101,7 @@ public class Wort {
         unregelmaesigeKonjuktion=new String[6];
         insgesamtWoerter++;
         wortstamm="Unregelaessig";
+        this.unregelmaessig=unregelmaessig;
     }
     Wort(String spanisch, String deutsch, char art,boolean unregelmaessig,String fistSing,String secSing,String thirdSing,String firstPlu,String secPlu,String thirdPlu) {
         invinitivSpan = spanisch;
@@ -113,14 +115,50 @@ public class Wort {
         unregelmaesigeKonjuktion[5]=thirdPlu;
         insgesamtWoerter++;
         wortstamm="Unregelaessig";
+        this.unregelmaessig=unregelmaessig;
     }
 
-    public void setUnregelmaesigeKonjuktion(String s,int person, boolean plural){
+    Wort(String input){
+        String[] stringArray=input.split(";");
+        if (stringArray[2]=="true"){
+            invinitivDeutsch =stringArray[0];
+            invinitivSpan=stringArray[1];
+            unregelmaessig= Boolean.parseBoolean(stringArray[2]);
+            wortstamm=stringArray[3];
+            unregelmaesigeKonjuktion[0]=stringArray[4];
+            unregelmaesigeKonjuktion[1]=stringArray[5];
+            unregelmaesigeKonjuktion[2]=stringArray[6];
+            unregelmaesigeKonjuktion[3]=stringArray[7];
+            unregelmaesigeKonjuktion[4]=stringArray[8];
+            unregelmaesigeKonjuktion[5]=stringArray[9];
+            nomenF= Boolean.parseBoolean(stringArray[10]);
+            verbF= Boolean.parseBoolean(stringArray[11]);
+            adjektivF= Boolean.parseBoolean(stringArray[12]);
+        }else {
+            invinitivDeutsch =stringArray[0];
+            invinitivSpan=stringArray[1];
+            unregelmaessig= Boolean.parseBoolean(stringArray[2]);
+            wortstamm=stringArray[3];
+            setKonjuktion(stringArray[4],1,false,false);
+            setKonjuktion(stringArray[5],2,false,false);
+            setKonjuktion(stringArray[6],3,false,false);
+            setKonjuktion(stringArray[7],1,true,false);
+            setKonjuktion(stringArray[8],2,true,false);
+            setKonjuktion(stringArray[9],3,true,false);
+            nomenF= Boolean.parseBoolean(stringArray[10]);
+            verbF= Boolean.parseBoolean(stringArray[11]);
+            adjektivF= Boolean.parseBoolean(stringArray[12]);
+        }
+
+    }
+
+    public void setKonjuktion(String s, int person, boolean plural,boolean unregelmaessig){
         if (plural){
             unregelmaesigeKonjuktion[3+person]=s;
         }else{
             unregelmaesigeKonjuktion[person]=s;
         }
+        this.unregelmaessig=unregelmaessig;
     }
 
     public static int getInsgesamtWoerter() {
@@ -221,11 +259,12 @@ public class Wort {
     public String toString(){
         String ausgabe="fehler";
         if (unregelmaessig){
-            ausgabe=invinitivDeutsch+";"+invinitivSpan+";"+wortstamm+";"+unregelmaesigeKonjuktion[0]+";"+unregelmaesigeKonjuktion[1]+";"+unregelmaesigeKonjuktion[2]+";"+unregelmaesigeKonjuktion[3]+";"+unregelmaesigeKonjuktion[4]+";"+unregelmaesigeKonjuktion[5]+";"+nomenF+";"+verbF+";"+adjektivF+";\n";
+            ausgabe=invinitivDeutsch+";"+invinitivSpan+";"+unregelmaessig+";"+wortstamm+";"+unregelmaesigeKonjuktion[0]+";"+unregelmaesigeKonjuktion[1]+";"+unregelmaesigeKonjuktion[2]+";"+unregelmaesigeKonjuktion[3]+";"+unregelmaesigeKonjuktion[4]+";"+unregelmaesigeKonjuktion[5]+";"+nomenF+";"+verbF+";"+adjektivF+";\n";
         }else {
-            ausgabe=invinitivDeutsch+";"+invinitivSpan+";"+wortstamm+";"+getkonjugirt(1,false)+";"+getkonjugirt(2,false)+";"+getkonjugirt(3,false)+";"+getkonjugirt(1,true)+";"+getkonjugirt(2,true)+";"+getkonjugirt(3,true)+";"+nomenF+";"+verbF+";"+adjektivF+";\n";
+            ausgabe=invinitivDeutsch+";"+invinitivSpan+";"+unregelmaessig+";"+wortstamm+";"+getkonjugirt(1,false)+";"+getkonjugirt(2,false)+";"+getkonjugirt(3,false)+";"+getkonjugirt(1,true)+";"+getkonjugirt(2,true)+";"+getkonjugirt(3,true)+";"+nomenF+";"+verbF+";"+adjektivF+";\n";
         }
         return ausgabe;
     }
+
 
 }

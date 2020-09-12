@@ -34,5 +34,11 @@ public class SpeichernUndLadenTXT {
         return ausgabe;
     }
 
+    public static int getEinheiten(String location,String trennzeichen){
+        String tenp=read(location);
+       return tenp.split(trennzeichen).length;
+
+    }
+
 
 }
