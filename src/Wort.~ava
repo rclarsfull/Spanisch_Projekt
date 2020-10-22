@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class Wort {
-        // test
+
     private String invinitivSpan;
     private String invinitivDeutsch;
     private String [] unregelmaesigeKonjuktion;
